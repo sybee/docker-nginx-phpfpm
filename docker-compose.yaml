@@ -22,8 +22,6 @@ services:
     ports:
         - "8080:80"
     volumes:
-      - ./docker/nginx/conf.d/example.loc.conf:/etc/nginx/conf.d/example.loc.conf
-      - ./docker/nginx/conf.d/subdomain.example.loc.conf:/etc/nginx/conf.d/subdomain.example.loc.conf
       - ./logs:/var/log/nginx
       - phpsocket:/var/run
     restart: always
