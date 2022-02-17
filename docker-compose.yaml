@@ -1,0 +1,32 @@
+version: '3.9'
+
+services: 
+  # PHP
+  php:
+    build: 
+      dockerfile: ./docker/php/Dockerfile
+      context: .
+    volumes:
+      - ./www/example.loc/:/var/www/example.loc
+      - ./www/subdomain.example.loc/:/var/www/subdomain.example.loc
+      - phpsocket:/var/run
+    restart: always
+    depends_on:
+      - nginx
+
+  # NGINX
+  nginx:
+    build: 
+      dockerfile: ./docker/nginx/Dockerfile
+      context: .
+    ports:
+        - "8080:80"
+    volumes:
+      - ./docker/nginx/conf.d/example.loc.conf:/etc/nginx/conf.d/example.loc.conf
+      - ./docker/nginx/conf.d/subdomain.example.loc.conf:/etc/nginx/conf.d/subdomain.example.loc.conf
+      - ./logs:/var/log/nginx
+      - phpsocket:/var/run
+    restart: always
+
+volumes:
+  phpsocket:
